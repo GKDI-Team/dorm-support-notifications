@@ -1,0 +1,13 @@
+openapi: 3.0.3
+info:
+  title: DormSupport Notifications API
+  version: 0.1.0
+  description: Internal notification consumer. Business notifications are received from Kafka.
+servers:
+  - url: http://localhost:8080
+paths:
+  /health:
+    get:
+      summary: Service health
+      responses:
+        '200': { description: Service is available }
