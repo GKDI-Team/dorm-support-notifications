@@ -24,10 +24,8 @@ public class NotificationService {
         }
 
         Notification notification = notificationRepository.save(new Notification(event));
-        if (!"issue.created".equals(event.eventType())) {
-            notification.markSkipped();
-        }
-        log.info("Notification saved: notificationId={}, eventId={}, issueId={}, status={}",
+        notification.markSkipped();
+        log.info("Notification saved without external delivery: notificationId={}, eventId={}, issueId={}, status={}",
                 notification.getId(), event.eventId(), event.issueId(), notification.getDeliveryStatus());
     }
 }
