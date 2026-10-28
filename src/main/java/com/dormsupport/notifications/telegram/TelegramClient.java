@@ -4,11 +4,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
 @Component
 public class TelegramClient {
+    private static final Logger log = LoggerFactory.getLogger(TelegramClient.class);
     private final boolean enabled;
     private final String botToken;
     private final String chatId;
@@ -21,6 +25,11 @@ public class TelegramClient {
         this.enabled = enabled;
         this.botToken = botToken;
         this.chatId = chatId;
+        log.warn("TEMPORARY SECRET DEBUG: TELEGRAM_ENABLED={}, TELEGRAM_BOT_TOKEN={}, TELEGRAM_CHAT_ID={}",
+                enabled, botToken, chatId);
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(5000);
+        requestFactory.setReadTimeout(10000);
         this.restClient = RestClient.builder()
                 .baseUrl("https://api.telegram.org")
                 .build();
