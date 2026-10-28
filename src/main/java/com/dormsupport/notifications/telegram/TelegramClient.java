@@ -32,7 +32,6 @@ public class TelegramClient {
         requestFactory.setReadTimeout(10000);
         this.restClient = RestClient.builder()
                 .baseUrl("https://api.telegram.org")
-                .requestFactory(requestFactory)
                 .build();
     }
 
@@ -42,7 +41,7 @@ public class TelegramClient {
 
     public void sendMessage(String message) {
         if (!isEnabled()) {
-            throw new IllegalStateException("Telegram is not configured");
+            return;
         }
 
         restClient.post()
