@@ -108,6 +108,20 @@ public class Notification {
     public UUID getIssueId() { return issueId; }
     public NotificationDeliveryStatus getDeliveryStatus() { return deliveryStatus; }
 
+    public String telegramMessage() {
+        return "🆕 Новая заявка\n\nТема: " + value(title)
+                + "\nКатегория: " + value(categoryName)
+                + "\nКорпус: " + value(block)
+                + "\nКомната: " + value(roomNumber)
+                + "\nМесто: " + value(locationDetails)
+                + "\nОписание: " + value(descriptionPreview)
+                + "\nНомер заявки: " + issueId;
+    }
+
+    private static String value(String value) {
+        return value == null || value.isBlank() ? "—" : value;
+    }
+
     public void markSent() {
         deliveryStatus = NotificationDeliveryStatus.SENT;
         sentAt = Instant.now();
