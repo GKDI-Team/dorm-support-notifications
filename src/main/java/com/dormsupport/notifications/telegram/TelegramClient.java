@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 
 import java.util.Map;
 
@@ -21,8 +22,12 @@ public class TelegramClient {
         this.enabled = enabled;
         this.botToken = botToken;
         this.chatId = chatId;
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(5000);
+        requestFactory.setReadTimeout(10000);
         this.restClient = RestClient.builder()
                 .baseUrl("https://api.telegram.org")
+                .requestFactory(requestFactory)
                 .build();
     }
 
@@ -32,7 +37,7 @@ public class TelegramClient {
 
     public void sendMessage(String message) {
         if (!isEnabled()) {
-            return;
+            throw new IllegalStateException("Telegram is not configured");
         }
 
         restClient.post()
