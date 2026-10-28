@@ -6,14 +6,15 @@
   "properties": {
     "eventId": { "type": "string", "format": "uuid" },
     "eventType": { "type": "string", "enum": ["issue.created", "issue.status_changed"] },
-    "issueId": { "type": "integer", "minimum": 1 },
+    "issueId": { "type": "string", "format": "uuid" },
     "status": { "type": "string", "enum": ["NEW", "IN_PROGRESS", "CLOSED"] },
     "previousStatus": { "type": ["string", "null"], "enum": ["NEW", "IN_PROGRESS", "CLOSED", null] },
     "occurredAt": { "type": "string", "format": "date-time" },
     "title": { "type": "string" },
     "descriptionPreview": { "type": "string", "maxLength": 500 },
     "categoryName": { "type": "string" },
-    "blockName": { "type": "string" },
+    "blockId": { "type": ["string", "null"], "format": "uuid" },
+    "blockName": { "type": ["string", "null"] },
     "roomNumber": { "type": "string" },
     "locationDetails": { "type": "string" }
   },
