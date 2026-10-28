@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS notifications (
     occurred_at TIMESTAMPTZ NOT NULL,
     title VARCHAR(150) NOT NULL,
     description_preview VARCHAR(500),
-    block_id UUID,
+    block VARCHAR(50),
     room_number VARCHAR(20),
     location_details VARCHAR(250),
     category_name VARCHAR(80),

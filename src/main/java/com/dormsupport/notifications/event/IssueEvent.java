@@ -14,7 +14,7 @@ public record IssueEvent(
         Instant occurredAt,
         String title,
         String descriptionPreview,
-        UUID blockId,
+        String block,
         String roomNumber,
         String locationDetails,
         String categoryName) {

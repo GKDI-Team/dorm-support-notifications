@@ -48,8 +48,8 @@ public class Notification {
     @Column(name = "description_preview", length = 500)
     private String descriptionPreview;
 
-    @Column(name = "block_id")
-    private UUID blockId;
+    @Column(length = 50)
+    private String block;
 
     @Column(name = "room_number", length = 20)
     private String roomNumber;
@@ -86,7 +86,7 @@ public class Notification {
         this.occurredAt = event.occurredAt();
         this.title = event.title();
         this.descriptionPreview = event.descriptionPreview();
-        this.blockId = event.blockId();
+        this.block = event.block();
         this.roomNumber = event.roomNumber();
         this.locationDetails = event.locationDetails();
         this.categoryName = event.categoryName();
