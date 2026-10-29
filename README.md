@@ -1,23 +1,38 @@
 # dorm-support-notifications
 
-## API documentation
+## О сервисе
 
-This service has no public business HTTP endpoints in the MVP. Swagger UI is available at `/swagger-ui.html` for the health endpoint.
+Сервис отправки уведомлений о заявках в Telegram.
 
-The Kafka event contract consumed by this service is stored in `src/main/resources/events.schema.json`.
+**Технологии:** Java, Spring Boot, PostgreSQL, Kafka, Telegram Bot API.
 
-## Local database initialization
+**Основные ручки:** публичных ручек управления уведомлениями нет; сервис получает события из Kafka.
 
-The schema is stored in `src/main/resources/db/init.sql` and is mounted by the root
-`docker-compose.yml` into `/docker-entrypoint-initdb.d/`.
-PostgreSQL executes this script automatically when the `notifications_db` volume is
-created for the first time. A regular `git push` does not modify an existing database
-volume. If the volume already exists, apply the script once manually or recreate only
-the notifications database volume when it is safe to remove local data.
+## Запуск
 
-## Kafka MVP
+Из папки `dorm-support-infrastructure`:
 
-The service consumes `dormsupport.issue-events` and writes one notification record per
-event to `notifications_db`. Duplicate events are ignored by `event_id`. At this stage
-there is no Telegram delivery: every accepted event is saved with delivery status
-`SKIPPED` and the received event is written to the service log.
+```bash
+docker compose up --build notifications-service
+```
+
+Для отправки в Telegram задайте переменные окружения `TELEGRAM_BOT_TOKEN` и `TELEGRAM_CHAT_ID`. Если Telegram не нужен, задайте `TELEGRAM_ENABLED=false`. Compose также запустит PostgreSQL и Kafka. Весь проект можно поднять командой `make up` из папки инфраструктуры.
+
+## Документация API
+
+В текущей версии сервис не предоставляет публичных ручек для работы с уведомлениями. Swagger UI для ручки проверки состояния доступен по адресу `/swagger-ui.html`.
+
+Описание получаемых сервисом событий Kafka находится в `src/main/resources/events.schema.json`.
+
+## Инициализация локальной базы данных
+
+Схема хранится в `src/main/resources/db/init.sql` и подключается через
+`docker-compose.yml` в `/docker-entrypoint-initdb.d/`. PostgreSQL выполняет скрипт
+автоматически при первом создании тома `notifications_db`. Команда `git push` не
+изменяет существующий том базы данных. Если том уже существует, примените скрипт
+вручную или пересоздайте только том базы уведомлений, когда удаление локальных данных безопасно.
+
+## Kafka
+
+Сервис получает события из `dormsupport.issue-events` и сохраняет уведомления в
+`notifications_db`. Отправка в Telegram настраивается через переменные окружения.
